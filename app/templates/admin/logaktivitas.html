@@ -1,0 +1,63 @@
+{% extends 'admin/sidebar.html' %} {% block content %}
+
+<style>
+    .btn-full-width {
+        width: 78px;
+    }
+</style>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Daftar Peminjaman</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                <li class="breadcrumb-item active">Daftar Peminjaman</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th>Log ID</th>
+                                    <th>Username</th>
+                                    <th>Aksi</th>
+                                    <th>Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kategoriTableBody">
+                                {% for log in faiz_logaktivitas %}
+                                <tr>
+                                    <td>{{ loop.index }}</td> <!-- LogID -->
+                                    <td>{{ log[1] }}</td> <!-- Username -->
+                                    <td>{{ log[2] }}</td> <!-- Aksi -->
+                                    <td>{{ log[3] }}</td> <!-- Tanggal -->
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const faiz_dataTable = new simpleDatatables.DataTable(".datatable", {
+            searchable: true,
+            sortable: true,
+            perPage: 10,
+            perPageSelect: [10, 25, 50, 100],
+            labels: {
+                placeholder: "Cari...",
+            }
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'admin/sidebar.html' %}
+{% block content %}
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Jumlah Buku <span>| All Time</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-book"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ faiz_jumlahbuku }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Jumlah Peminjaman <span>| All Time</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-file-earmark-text"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ faiz_jumlahpeminjaman }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card info-card customers-card">
+              <div class="card-body">
+                <h5 class="card-title">Jumlah Pengguna <span>| All Time</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-person"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ faiz_jumlahpeminjam }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Grafik Peminjaman Buku Bulan Ini</h5>
+                <canvas id="peminjamanChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('peminjamanChart').getContext('2d');
+    var tanggal = {{ faiz_peminjaman | tojson | safe
+  }};
+  var jumlah = {{ faiz_jumlahpeminjamanharian | tojson | safe }};
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: tanggal,
+      datasets: [{
+        label: 'Jumlah Peminjaman',
+        data: jumlah,
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2,
+        fill: false,
+        tension: 0.1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Jumlah Peminjaman'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Tanggal'
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top'
+        }
+      }
+    }
+  });
+  });
+</script>
+{% endblock %}
